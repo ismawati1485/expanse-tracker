@@ -9,18 +9,18 @@ interface ChartsProps {
 const COLORS = [
   'hsl(142.1 76.2% 36.3%)', // income
   'hsl(0 72.2% 50.6%)',     // expense  
-  'hsl(217.2 91.2% 59.8%)', // blue
-  'hsl(47.9 95.8% 53.1%)',  // yellow
-  'hsl(262.1 83.3% 57.8%)', // purple
-  'hsl(173.4 58.9% 39.4%)', // teal
-  'hsl(24.6 95% 53.1%)',    // orange
-  'hsl(346.8 77.2% 49.8%)', // pink
-  'hsl(120 100% 25%)',      // green
-  'hsl(339.6 82.2% 51.6%)', // magenta
+  'hsl(217.2 91.2% 59.8%)', 
+  'hsl(47.9 95.8% 53.1%)',  
+  'hsl(262.1 83.3% 57.8%)', 
+  'hsl(173.4 58.9% 39.4%)', 
+  'hsl(24.6 95% 53.1%)',    
+  'hsl(346.8 77.2% 49.8%)', 
+  'hsl(120 100% 25%)',      
+  'hsl(339.6 82.2% 51.6%)', 
 ];
 
 export const Charts = ({ transactions }: ChartsProps) => {
-  // Data untuk pie chart - distribusi pengeluaran per kategori
+  // Data pie chart 
   const expensesByCategory = transactions
     .filter(t => t.type === 'expense')
     .reduce((acc, transaction) => {
@@ -33,7 +33,7 @@ export const Charts = ({ transactions }: ChartsProps) => {
     value: amount,
   }));
 
-  // Data untuk bar chart - pemasukan vs pengeluaran per bulan
+  // Data bar chart 
   const monthlyData = transactions.reduce((acc, transaction) => {
     const monthYear = new Date(transaction.date).toLocaleDateString('id-ID', { 
       month: 'short', 
@@ -86,7 +86,7 @@ export const Charts = ({ transactions }: ChartsProps) => {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      {/* Pie Chart - Distribusi Pengeluaran */}
+    
       <Card className="bg-gradient-card shadow-elevated">
         <CardHeader>
           <CardTitle>Distribusi Pengeluaran per Kategori</CardTitle>
