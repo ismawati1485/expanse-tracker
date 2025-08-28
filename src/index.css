@@ -8,7 +8,7 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 220 13% 97%;
     --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
@@ -17,8 +17,8 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 142.1 76.2% 36.3%;
+    --primary-foreground: 355.7 100% 97.3%;
 
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
@@ -29,14 +29,31 @@ All colors MUST be HSL.
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 72.2% 50.6%;
     --destructive-foreground: 210 40% 98%;
+
+    --success: 142.1 76.2% 36.3%;
+    --success-foreground: 355.7 100% 97.3%;
+
+    --warning: 47.9 95.8% 53.1%;
+    --warning-foreground: 26 83.3% 14.1%;
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --ring: 142.1 76.2% 36.3%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+
+    /* Expense Tracker specific tokens */
+    --income: 142.1 76.2% 36.3%;
+    --income-foreground: 355.7 100% 97.3%;
+    --expense: 0 72.2% 50.6%;
+    --expense-foreground: 210 40% 98%;
+    
+    --gradient-primary: linear-gradient(135deg, hsl(142.1 76.2% 36.3%), hsl(142.1 70% 45%));
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(220 13% 98%));
+    --shadow-elevated: 0 10px 25px -5px hsl(220 13% 91% / 0.3), 0 4px 6px -2px hsl(220 13% 91% / 0.1);
+    --shadow-glow: 0 0 40px hsl(142.1 76.2% 36.3% / 0.15);
 
     --sidebar-background: 0 0% 98%;
 
