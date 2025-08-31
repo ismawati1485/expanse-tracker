@@ -12,6 +12,7 @@ import DashboardPage from "./pages/DashboardPage";
 import TransactionsPage from "./pages/TransactionsPage";
 import NotFound from "./pages/NotFound";
 import { useToast } from '@/hooks/use-toast';
+import GeminiTestPage from './pages/GeminiTestPage';
 
 const queryClient = new QueryClient();
 
@@ -19,6 +20,10 @@ const App = () => {
   const [transactions, setTransactions] = useLocalStorage<Transaction[]>('expense-tracker-transactions', []);
   const { toast } = useToast();
 
+    useEffect(() => {
+    console.log("API Key dari .env:", import.meta.env.VITE_GEMINI_API_KEY);
+  }, []);
+  
   // Initialize with dummy data if localStorage is empty
   useEffect(() => {
     if (transactions.length === 0) {
@@ -89,6 +94,8 @@ const App = () => {
           <div className="min-h-screen bg-background">
             <Navigation />
             <Routes>
+              <Route path="/gemini-test" element={<GeminiTestPage />} />
+              <Route path="/not-found" element={<NotFound />} />
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
               <Route 
                 path="/dashboard" 
