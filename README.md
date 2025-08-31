@@ -48,4 +48,4 @@ AI mampu memprediksi pengeluaran di masa depan berdasarkan data historis, sehing
 Interaksi Pintar
 Pengguna bisa bertanya langsung pada AI tentang status keuangan, misalnya “Berapa total pengeluaran saya bulan ini?” atau “Kategori apa yang paling boros?”, dan AI akan memberikan jawaban secara instan.
 
-Dengan fitur AI ini, aplikasi tidak hanya mencatat transaksi, tapi juga membantu pengguna untuk mengelola keuangan secara lebih cerdas dan terinformasi.
+Dengan fitur AI ini, aplikasi tidak hanya mencatat transaksi, tapi juga membantu pengguna untuk mengelola keuangan secara lebih cerdas dan terinformasi.# expanse-tracker
