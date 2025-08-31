@@ -1,6 +1,7 @@
 import { Transaction } from '@/types/transaction';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { TrendingUp, TrendingDown } from 'lucide-react';
 
 interface ChartsProps {
   transactions: Transaction[];
@@ -85,80 +86,130 @@ export const Charts = ({ transactions }: ChartsProps) => {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
       {/* Pie Chart - Distribusi Pengeluaran */}
-      <Card className="bg-gradient-card shadow-elevated">
-        <CardHeader>
-          <CardTitle>Distribusi Pengeluaran per Kategori</CardTitle>
+      <Card className="bg-gradient-chart shadow-chart hover:shadow-glow transition-all duration-300 border-0">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg font-semibold bg-gradient-primary bg-clip-text text-transparent">
+            Distribusi Pengeluaran per Kategori
+          </CardTitle>
         </CardHeader>
         <CardContent>
           {pieChartData.length > 0 ? (
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={350}>
               <PieChart>
                 <Pie
                   data={pieChartData}
                   cx="50%"
                   cy="50%"
                   labelLine={false}
-                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                  outerRadius={80}
+                  label={({ name, percent }) => percent > 5 ? `${name} ${(percent * 100).toFixed(0)}%` : ''}
+                  outerRadius={100}
+                  innerRadius={40}
                   fill="#8884d8"
                   dataKey="value"
+                  strokeWidth={2}
+                  stroke="hsl(var(--background))"
                 >
                   {pieChartData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    <Cell 
+                      key={`cell-${index}`} 
+                      fill={COLORS[index % COLORS.length]}
+                      className="hover:opacity-80 transition-opacity duration-200"
+                    />
                   ))}
                 </Pie>
                 <Tooltip content={<CustomTooltip />} />
+                <Legend 
+                  verticalAlign="bottom" 
+                  height={36}
+                  wrapperStyle={{ paddingTop: '20px' }}
+                />
               </PieChart>
             </ResponsiveContainer>
           ) : (
-            <div className="h-[300px] flex items-center justify-center text-muted-foreground">
-              Belum ada data pengeluaran
+            <div className="h-[350px] flex flex-col items-center justify-center text-muted-foreground">
+              <div className="w-16 h-16 rounded-full bg-muted/50 flex items-center justify-center mb-4">
+                <TrendingDown className="h-8 w-8" />
+              </div>
+              <p className="text-center">Belum ada data pengeluaran</p>
             </div>
           )}
         </CardContent>
       </Card>
 
       {/* Bar Chart - Pemasukan vs Pengeluaran Bulanan */}
-      <Card className="bg-gradient-card shadow-elevated">
-        <CardHeader>
-          <CardTitle>Pemasukan vs Pengeluaran Bulanan</CardTitle>
+      <Card className="bg-gradient-chart shadow-chart hover:shadow-glow transition-all duration-300 border-0">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg font-semibold bg-gradient-primary bg-clip-text text-transparent">
+            Pemasukan vs Pengeluaran Bulanan
+          </CardTitle>
         </CardHeader>
         <CardContent>
           {barChartData.length > 0 ? (
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={barChartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+            <ResponsiveContainer width="100%" height={350}>
+              <BarChart 
+                data={barChartData} 
+                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                barCategoryGap="20%"
+              >
+                <defs>
+                  <linearGradient id="incomeGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="hsl(var(--income))" stopOpacity={0.9} />
+                    <stop offset="100%" stopColor="hsl(var(--income))" stopOpacity={0.6} />
+                  </linearGradient>
+                  <linearGradient id="expenseGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="hsl(var(--expense))" stopOpacity={0.9} />
+                    <stop offset="100%" stopColor="hsl(var(--expense))" stopOpacity={0.6} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid 
+                  strokeDasharray="3 3" 
+                  stroke="hsl(var(--border))" 
+                  strokeOpacity={0.3}
+                />
                 <XAxis 
                   dataKey="month" 
                   stroke="hsl(var(--muted-foreground))"
-                  fontSize={12}
+                  fontSize={11}
+                  fontWeight={500}
+                  axisLine={false}
+                  tickLine={false}
                 />
                 <YAxis 
                   tickFormatter={formatCurrency}
                   stroke="hsl(var(--muted-foreground))"
-                  fontSize={12}
+                  fontSize={11}
+                  fontWeight={500}
+                  axisLine={false}
+                  tickLine={false}
                 />
                 <Tooltip content={<CustomTooltip />} />
-                <Legend />
+                <Legend 
+                  wrapperStyle={{ paddingTop: '20px' }}
+                />
                 <Bar 
                   dataKey="income" 
-                  fill="hsl(var(--income))" 
+                  fill="url(#incomeGradient)"
                   name="Pemasukan"
-                  radius={[2, 2, 0, 0]}
+                  radius={[4, 4, 0, 0]}
+                  className="hover:opacity-80 transition-opacity duration-200"
                 />
                 <Bar 
                   dataKey="expense" 
-                  fill="hsl(var(--expense))" 
+                  fill="url(#expenseGradient)"
                   name="Pengeluaran"
-                  radius={[2, 2, 0, 0]}
+                  radius={[4, 4, 0, 0]}
+                  className="hover:opacity-80 transition-opacity duration-200"
                 />
               </BarChart>
             </ResponsiveContainer>
           ) : (
-            <div className="h-[300px] flex items-center justify-center text-muted-foreground">
-              Belum ada data transaksi
+            <div className="h-[350px] flex flex-col items-center justify-center text-muted-foreground">
+              <div className="w-16 h-16 rounded-full bg-muted/50 flex items-center justify-center mb-4">
+                <TrendingUp className="h-8 w-8" />
+              </div>
+              <p className="text-center">Belum ada data transaksi</p>
             </div>
           )}
         </CardContent>

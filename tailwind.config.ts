@@ -81,11 +81,14 @@ export default {
 			},
 			backgroundImage: {
 				'gradient-primary': 'var(--gradient-primary)',
-				'gradient-card': 'var(--gradient-card)'
+				'gradient-secondary': 'var(--gradient-secondary)',
+				'gradient-card': 'var(--gradient-card)',
+				'gradient-chart': 'var(--gradient-chart)'
 			},
 			boxShadow: {
 				'elevated': 'var(--shadow-elevated)',
-				'glow': 'var(--shadow-glow)'
+				'glow': 'var(--shadow-glow)',
+				'chart': 'var(--shadow-chart)'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
