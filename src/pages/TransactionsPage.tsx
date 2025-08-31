@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { Transaction } from '@/types/transaction';
 import { TransactionForm } from '@/components/TransactionForm';
-import { TransactionList } from '@/components/TransactionList';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { Plus } from 'lucide-react';
+import { MonthlyReport } from '@/components/MonthlyReport';
 
 interface TransactionsPageProps {
   transactions: Transaction[];
@@ -83,12 +83,8 @@ const TransactionsPage = ({
           </Dialog>
         </div>
       </div>
-
-      {/* Transaction List */}
-      <TransactionList
-        transactions={transactions}
-        onEdit={openEditForm}
-        onDelete={setDeleteId}
+            {/* Monthly Report */}
+      <MonthlyReport transactions={transactions} 
       />
 
       {/* Delete Confirmation Dialog */}

@@ -1,13 +1,10 @@
 import React, { useState } from "react";
 import { Transaction } from '@/types/transaction';
-import { Dashboard } from '@/components/Dashboard';
+import { MetricCard } from '@/components/MetricCard';
 import { Charts } from '@/components/Charts';
 import { analyzeExpenses } from "@/services/analyze";
 import { ExportButton } from '@/components/ExportButton';
-import { MonthlyReport } from '@/components/MonthlyReport';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BarChart3, FileSpreadsheet, Calendar } from 'lucide-react';
-
+import { Wallet, TrendingUp, TrendingDown, BarChart3 } from 'lucide-react';
 
 interface DashboardPageProps {
   transactions: Transaction[];
@@ -16,39 +13,68 @@ interface DashboardPageProps {
 const DashboardPage = ({ transactions }: DashboardPageProps) => {
   const [analysis, setAnalysis] = useState("");
 
-  const handleAnalyze = async () => {
-    // mapping transactions biar cocok sama service
-    const expenseData = transactions.map((t) => ({
-      category: t.category,
-      amount: t.amount,
-    }));
+  const totalIncome = transactions
+    .filter(t => t.type === 'income')
+    .reduce((sum, t) => sum + t.amount, 0);
 
-    const result = await analyzeExpenses(expenseData);
-    setAnalysis(result);
+  const totalExpense = transactions
+    .filter(t => t.type === 'expense')
+    .reduce((sum, t) => sum + t.amount, 0);
+
+  const balance = totalIncome - totalExpense;
+
+  const handleAnalyze = async () => {
+    try {
+      const expenseData = transactions.map(t => ({
+        category: t.category,
+        amount: t.amount,
+      }));
+      const result = await analyzeExpenses(expenseData);
+      setAnalysis(result);
+    } catch (err) {
+      console.error("Gagal analisis:", err);
+      setAnalysis("❌ Gagal melakukan analisis. Cek API key atau koneksi.");
+    }
   };
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* Page Header */}
-      <div className="mb-8">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
-            <h1 className="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-              Dashboard
-            </h1>
-            <p className="text-muted-foreground mt-1">
-              Lihat ringkasan keuangan Anda
-            </p>
-          </div>
-          <ExportButton transactions={transactions} />
+      {/* Header */}
+      <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+            Dashboard
+          </h1>
+          <p className="text-muted-foreground mt-1">
+            Lihat ringkasan keuangan Anda
+          </p>
         </div>
+        <ExportButton transactions={transactions} />
       </div>
 
-      {/* Dashboard Metrics */}
-      <Dashboard transactions={transactions} />
+      {/* Metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <MetricCard
+          title="Total Saldo"
+          amount={balance}
+          type={balance >= 0 ? 'income' : 'expense'}
+          icon={<Wallet className="h-6 w-6" />}
+        />
+        <MetricCard
+          title="Total Pemasukan"
+          amount={totalIncome}
+          type="income"
+          icon={<TrendingUp className="h-6 w-6" />}
+        />
+        <MetricCard
+          title="Total Pengeluaran"
+          amount={totalExpense}
+          type="expense"
+          icon={<TrendingDown className="h-6 w-6" />}
+        />
+      </div>
 
-
-      {/* Charts Section */}
+      {/* Charts */}
       <div className="mb-8">
         <div className="flex items-center gap-2 mb-6">
           <BarChart3 className="h-5 w-5 text-primary" />
@@ -56,7 +82,7 @@ const DashboardPage = ({ transactions }: DashboardPageProps) => {
         </div>
         <Charts transactions={transactions} />
 
-        {/* Tambahin Tombol Analisis */}
+        {/* AI Analysis */}
         <button
           onClick={handleAnalyze}
           className="mt-6 px-4 py-2 bg-green-600 text-white rounded-lg"
@@ -64,10 +90,9 @@ const DashboardPage = ({ transactions }: DashboardPageProps) => {
           Analisis Pengeluaran dengan AI
         </button>
 
-        {/* Hasil Analisis */}
         {analysis && (
           <div className="mt-4 p-4 bg-gray-100 rounded-lg">
-            <h3 className="font-semibold mb-2">Hasil Analisis:</h3>
+            <h3 className="font-semibold mb-2">Hasil Analisis AI:</h3>
             <p>{analysis}</p>
           </div>
         )}
