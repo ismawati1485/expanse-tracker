@@ -2,8 +2,12 @@ import React, { useState } from "react";
 import { Transaction } from '@/types/transaction';
 import { Dashboard } from '@/components/Dashboard';
 import { Charts } from '@/components/Charts';
-import { BarChart3 } from 'lucide-react';
 import { analyzeExpenses } from "@/services/analyze";
+import { ExportButton } from '@/components/ExportButton';
+import { MonthlyReport } from '@/components/MonthlyReport';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { BarChart3, FileSpreadsheet, Calendar } from 'lucide-react';
+
 
 interface DashboardPageProps {
   transactions: Transaction[];
@@ -27,14 +31,22 @@ const DashboardPage = ({ transactions }: DashboardPageProps) => {
     <div className="container mx-auto px-4 py-8">
       {/* Page Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold">Dashboard</h1>
-        <p className="text-muted-foreground mt-1">
-          Lihat ringkasan keuangan Anda
-        </p>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+              Dashboard
+            </h1>
+            <p className="text-muted-foreground mt-1">
+              Lihat ringkasan keuangan Anda
+            </p>
+          </div>
+          <ExportButton transactions={transactions} />
+        </div>
       </div>
 
       {/* Dashboard Metrics */}
       <Dashboard transactions={transactions} />
+
 
       {/* Charts Section */}
       <div className="mb-8">
@@ -60,6 +72,7 @@ const DashboardPage = ({ transactions }: DashboardPageProps) => {
           </div>
         )}
       </div>
+
     </div>
   );
 };
